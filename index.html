@@ -381,6 +381,107 @@
   }
   .saved-note-del:hover { opacity: 1; }
 
+  /* Sally酱建议 → 正式行程 */
+  .note-merge-btn {
+    padding: 2px 10px;
+    border: 1.5px solid #ba68c8;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 11px;
+    font-weight: 600;
+    background: white;
+    color: #7b1fa2;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+    margin-left: auto;
+  }
+  .note-merge-btn:hover {
+    background: #f3e5f5;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(186,104,200,0.25);
+  }
+  .note-merged .note-merge-btn {
+    display: none;
+  }
+
+  /* 建议已加入行程的样式（虚线框+特殊圆点） */
+  .time-item.suggested {
+    border-left: 3px dashed #ba68c8;
+    padding-left: 16px;
+    border-radius: 0 10px 10px 0;
+    background: linear-gradient(135deg, rgba(243,229,245,0.5) 0%, rgba(232,245,233,0.3) 100%);
+    animation: slideInNote 0.4s ease;
+  }
+  @keyframes slideInNote {
+    from { opacity: 0; transform: translateX(12px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+  .time-item.suggested .time-dot {
+    background: #ce93d8 !important;
+    border-color: #7b1fa2 !important;
+    box-shadow: 0 0 0 3px rgba(206,147,216,0.35);
+  }
+  .time-item.suggested .item-title::before {
+    content: '💡 ';
+  }
+  .time-item.suggested .item-desc {
+    font-size: 13px;
+  }
+  /* 状态标签 */
+  .suggest-tag {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 10px;
+    font-size: 10px;
+    font-weight: 700;
+    background: #f3e5f5;
+    color: #7b1fa2;
+    margin-top: 6px;
+  }
+  /* 操作按钮组 */
+  .suggest-actions {
+    display: flex;
+    gap: 6px;
+    margin-top: 8px;
+  }
+  .suggest-action-btn {
+    padding: 4px 14px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 11px;
+    font-weight: 600;
+    transition: all 0.2s ease;
+  }
+  .suggest-confirm {
+    background: linear-gradient(135deg, #a5d6a7, #66bb6a);
+    color: white;
+  }
+  .suggest-confirm:hover {
+    box-shadow: 0 2px 8px rgba(102,187,106,0.35);
+    transform: translateY(-1px);
+  }
+  .suggest-reject {
+    background: #ef9a9a;
+    color: white;
+  }
+  .suggest-reject:hover {
+    box-shadow: 0 2px 8px rgba(239,154,154,0.35);
+  }
+  .time-item.suggested.confirmed {
+    border-left: 3px solid #66bb6a;
+    background: linear-gradient(135deg, rgba(165,214,167,0.3) 0%, rgba(255,255,255,0.5) 100%);
+  }
+  .time-item.suggested.confirmed .time-dot {
+    background: #66bb6a !important;
+    border-color: #388e3c !important;
+    box-shadow: 0 0 0 3px rgba(102,187,106,0.35);
+  }
+  .time-item.suggested.rejected {
+    text-decoration: line-through;
+    opacity: 0.45;
+  }
+
   /* 小节标题 */
   .section-title {
     font-size: 15px;
@@ -504,7 +605,7 @@
 <div class="hero">
   <h1>🌸 <span>札幌</span> 4天3夜 · 春日之旅</h1>
   <p class="hero-subtext hero-subtitle">上海 → 札幌新千岁 | 赏樱 · 温泉 · 美食 · 户外购物</p>
-  <div class="hero-badge">📅 2人出行 · 2026年4月 | 体力活动 + 自行车骑行</div>
+  <div class="hero-badge">📅 2人出行 · 2026年4月 | 💬 Sally酱可补充想法 → 一键加入行程</div>
 </div>
 
 <!-- 导航 -->
@@ -1338,12 +1439,116 @@ function renderNotes(day) {
   container.innerHTML = '';
   list.forEach(function(note, idx) {
     var el = document.createElement('div');
-    el.className = 'saved-note-item';
+    var mergedClass = note.merged ? 'note-merged' : '';
+    el.className = 'saved-note-item ' + mergedClass;
+    var mergeBtnHtml = !note.merged
+      ? '<button class="note-merge-btn" onclick="mergeToItinerary(\'' + day + '\',' + idx + ',this)">➕ 加入行程</button>'
+      : '<span class="suggest-tag">✅ 已加入行程</span>';
     el.innerHTML = '<span class="saved-note-time">' + note.time + '</span>'
       + '<span>' + escapeHtml(note.text) + '</span>'
+      + mergeBtnHtml
       + '<button class="saved-note-del" onclick="deleteNote(\'' + day + '\',' + idx + ')">✕</button>';
     container.appendChild(el);
   });
+}
+
+// ====== 将Sally酱的建议合并为正式行程条目 ======
+function mergeToItinerary(day, idx, btn) {
+  var notes = getNotes();
+  var noteData = (notes[day] || [])[idx];
+  if (!noteData) return;
+
+  // 标记为已合并
+  noteData.merged = true;
+  saveNotes(notes);
+  renderNotes(day);
+
+  // 找到对应天的timeline，插入建议条目
+  var dayCard = document.getElementById(day);
+  if (!dayCard) return;
+  var timeline = dayCard.querySelector('.timeline');
+  if (!timeline) return;
+
+  // 创建新的时间线条目（带确认/拒绝操作）
+  var itemEl = document.createElement('div');
+  itemEl.className = 'time-item suggested';
+  itemEl.dataset.day = day;
+  itemEl.dataset.noteIdx = idx;
+  var timeLabel = '';
+  switch(day) {
+    case 'day1': timeLabel = '待安排'; break;
+    case 'day2': timeLabel = '待安排'; break;
+    case 'day3': timeLabel = '待安排'; break;
+    case 'day4': timeLabel = '待安排'; break;
+  }
+
+  // 尝试智能识别内容类型
+  var icon = '💡';
+  var lowerText = noteData.text.toLowerCase();
+  if (/吃|餐|美食|拉面|和牛|烧肉|寿司|海鲜|咖喱/.test(lowerText)) { icon = '🍽️'; }
+  else if (/买|购物|户外|装备|药妆|伴手礼|mont-bell|alpen/.test(lowerText)) { icon = '🛍️'; }
+  else if (/泡|温泉|汤|鹤雅/.test(lowerText)) { icon = '♨️'; }
+  else if (/逛|公园|神宫|樱花|塔|夜景|桥|山|河童/.test(lowerText)) { icon = '📍'; }
+  else if (/巴士|JR|地铁|骑车|自行车|飞机/.test(lowerText)) { icon = '🚌'; }
+  else if (/酒店|入住|休息/.test(lowerText)) { icon = '🏨'; }
+
+  itemEl.innerHTML =
+    '<span class="time-dot"></span>' +
+    '<span class="time-range">' + timeLabel + '</span>' +
+    '<div class="item-title">' + icon + ' Sally酱的提议：' + escapeHtml(noteData.text.substring(0, 40)) + (noteData.text.length > 40 ? '...' : '') + '</div>' +
+    '<div class="item-desc">' + escapeHtml(noteData.text) + '</div>' +
+    '<div class="suggest-actions">' +
+      '<button class="suggest-action-btn suggest-confirm" onclick="confirmSuggest(this)">✅ 确认加入</button>' +
+      '<button class="suggest-action-btn suggest-reject" onclick="rejectSuggest(this)">✕ 暂不考虑</button>' +
+    '</div>';
+
+  // 插入到timeline末尾
+  timeline.appendChild(itemEl);
+
+  // 滚动到新插入的条目
+  itemEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+// 确认采纳Sally的建议
+function confirmSuggest(btn) {
+  var item = btn.closest('.time-item.suggested');
+  if (item) {
+    item.classList.add('confirmed');
+    // 移除操作按钮，显示已确认状态
+    var actions = item.querySelector('.suggest-actions');
+    if (actions) {
+      actions.innerHTML = '<span class="suggest-tag" style="background:#c8e6c9;color:#2e7d32;">✅ 已确认加入正式行程</span>';
+    }
+    // 更新时间范围标签
+    var range = item.querySelector('.time-range');
+    if (range) range.textContent = '已确认';
+  }
+}
+
+// 暂时拒绝Sally的建议
+function rejectSuggest(btn) {
+  var item = btn.closest('.time-item.suggested');
+  if (item) {
+    item.classList.add('rejected');
+    var actions = item.querySelector('.suggest-actions');
+    if (actions) {
+      actions.innerHTML = '<span class="suggest-tag" style="background:#ffebee;color:#c62828;">⏸ 暂时不考虑（点击可恢复）</span>';
+      actions.querySelector('span').style.cursor = 'pointer';
+      actions.querySelector('span').onclick = function() {
+        item.classList.remove('rejected');
+        renderActions(item);
+        return false;
+      };
+    }
+  }
+}
+function renderActions(item) {
+  var actions = item.querySelector('.suggest-actions');
+  if (actions) {
+    actions.innerHTML =
+      '<button class="suggest-action-btn suggest-confirm" onclick="confirmSuggest(this)">✅ 确认加入</button>' +
+      '<button class="suggest-action-btn suggest-reject" onclick="rejectSuggest(this)">✕ 暂不考虑</button>';
+  }
 }
 
 function escapeHtml(text) {
