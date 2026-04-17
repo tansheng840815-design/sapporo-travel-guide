@@ -1,0 +1,1174 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🌸 札幌4天3夜 · 春日赏樱温泉之旅</title>
+<style>
+  :root {
+    --sakura: #f8c8d4;
+    --sakura-dark: #e891a3;
+    --spring-green: #a8d5ba;
+    --sky-blue: #87ceeb;
+    --warm-orange: #f5b041;
+    --dark: #2c3e50;
+    --light: #fdfaf6;
+    --card-bg: rgba(255,255,255,0.92);
+    --shadow: 0 8px 32px rgba(0,0,0,0.10);
+    --radius: 20px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: -apple-system, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    background: linear-gradient(135deg, #fce4ec 0%, #e8f5e9 40%, #e3f2fd 100%);
+    color: var(--dark);
+    line-height: 1.7;
+    min-height: 100vh;
+  }
+
+  /* 落花动画 */
+  .petal {
+    position: fixed;
+    top: -20px;
+    z-index: 1000;
+    pointer-events: none;
+    animation: fall linear infinite;
+    opacity: 0.7;
+    font-size: 18px;
+  }
+  @keyframes fall {
+    0% { transform: translateY(-20px) rotate(0deg) translateX(0); opacity: 0.9; }
+    70% { opacity: 0.7; }
+    100% { transform: translateY(100vh) rotate(720deg) translateX(80px); opacity: 0; }
+  }
+
+  /* Hero */
+  .hero {
+    position: relative;
+    text-align: center;
+    padding: 80px 20px 60px;
+    overflow: hidden;
+    background: linear-gradient(180deg, rgba(248,200,212,0.5) 0%, transparent 100%);
+  }
+  .hero h1 {
+    font-size: clamp(28px, 5vw, 48px);
+    font-weight: 800;
+    color: var(--dark);
+    letter-spacing: 2px;
+    text-shadow: 0 2px 12px rgba(255,255,255,0.8);
+  }
+  .hero h1 span { color: var(--sakura-dark); }
+  .hero-subtitle {
+    margin-top: 16px;
+    font-size: 18px;
+    color: #555;
+    font-weight: 400;
+  }
+  .hero-badge {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 8px 24px;
+    border-radius: 30px;
+    background: white;
+    border: 2px solid var(--sakura);
+    color: var(--sakura-dark);
+    font-weight: 600;
+    font-size: 14px;
+    box-shadow: 0 4px 15px rgba(232,145,163,0.25);
+  }
+
+  /* 快速导航 */
+  .nav-bar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    padding: 14px 20px;
+    backdrop-filter: blur(16px);
+    background: rgba(255,255,255,0.85);
+    border-bottom: 1px solid rgba(0,0,0,0.06);
+    flex-wrap: wrap;
+  }
+  .nav-btn {
+    padding: 8px 18px;
+    border-radius: 20px;
+    border: none;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    background: rgba(0,0,0,0.05);
+    color: #444;
+    white-space: nowrap;
+  }
+  .nav-btn:hover, .nav-btn.active {
+    background: var(--sakura);
+    color: white;
+    transform: translateY(-1px);
+  }
+
+  /* 主容器 */
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 30px 20px 80px;
+  }
+
+  /* 行程卡片 */
+  .day-card {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    margin-bottom: 36px;
+    overflow: hidden;
+    transition: transform 0.3s ease;
+  }
+  .day-card:hover { transform: translateY(-3px); }
+
+  .day-header {
+    padding: 26px 30px 20px;
+    position: relative;
+    overflow: hidden;
+  }
+  .day-1 .day-header { background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%); }
+  .day-2 .day-header { background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%); }
+  .day-3 .day-header { background: linear-gradient(135deg, #d299c2 0%, #fef9d7 100%); }
+  .day-4 .day-header { background: linear-gradient(135deg, #89f7fe 0%, #66a6ff 100%); }
+
+  .day-num {
+    display: inline-block;
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    background: white;
+    text-align: center;
+    line-height: 46px;
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--dark);
+    box-shadow: 0 3px 12px rgba(0,0,0,0.12);
+    margin-right: 14px;
+    vertical-align: middle;
+  }
+  .day-title {
+    display: inline-block;
+    vertical-align: middle;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--dark);
+  }
+  .day-tagline {
+    margin-top: 8px;
+    margin-left: 60px;
+    font-size: 14px;
+    opacity: 0.75;
+    font-weight: 500;
+  }
+
+  .day-body { padding: 20px 30px 30px; }
+
+  /* 时间线 */
+  .timeline { position: relative; padding-left: 32px; }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 11px;
+    top: 8px;
+    bottom: 8px;
+    width: 2px;
+    background: linear-gradient(to bottom, var(--sakura), var(--spring-green));
+    border-radius: 1px;
+  }
+
+  .time-item {
+    position: relative;
+    margin-bottom: 26px;
+    padding-left: 20px;
+  }
+  .time-item:last-child { margin-bottom: 0; }
+
+  .time-dot {
+    position: absolute;
+    left: -27px;
+    top: 4px;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: white;
+    border: 3px solid var(--sakura-dark);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.12);
+    z-index: 1;
+  }
+  .time-item.highlight .time-dot { border-color: var(--warm-orange); background: var(--warm-orange); }
+  .time-item.meal .time-dot { border-color: var(--spring-green); background: var(--spring-green); }
+
+  .time-range {
+    display: inline-block;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--sakura-dark);
+    background: rgba(248,200,212,0.3);
+    padding: 2px 10px;
+    border-radius: 10px;
+    margin-bottom: 4px;
+  }
+
+  .item-title {
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--dark);
+    margin: 4px 0 2px;
+  }
+  .item-desc {
+    font-size: 14px;
+    color: #666;
+    line-height: 1.65;
+  }
+  .item-tip {
+    display: block;
+    margin-top: 6px;
+    padding: 8px 14px;
+    background: #fffbeb;
+    border-left: 3px solid var(--warm-orange);
+    border-radius: 0 10px 10px 0;
+    font-size: 13px;
+    color: #92400e;
+  }
+  .item-tag {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 10px;
+    font-size: 11px;
+    font-weight: 600;
+    margin-right: 6px;
+    margin-top: 6px;
+  }
+  .tag-walk { background: #e8f5e9; color: #2e7d32; }
+  .tag-bike { background: #e3f2fd; color: #1565c0; }
+  .tag-bus { background: #fff3e0; color: #e65100; }
+  .tag-jr { background: #f3e5f5; color: #6a1b9a; }
+  .tag-food { background: #fce4ec; color: #c2185b; }
+  .tag-hotel { background: #e0f7fa; color: #00838f; }
+  .tag-flight { background: #ede7f6; color: #4527a0; }
+
+  /* 小节标题 */
+  .section-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--dark);
+    margin: 22px 0 12px;
+    padding-left: 12px;
+    border-left: 4px solid var(--sakura-dark);
+  }
+
+  /* 信息面板 */
+  .info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 16px;
+    margin-top: 16px;
+  }
+  .info-box {
+    background: white;
+    border-radius: 14px;
+    padding: 18px;
+    border: 1px solid rgba(0,0,0,0.05);
+  }
+  .info-box h4 {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--sakura-dark);
+    margin-bottom: 8px;
+  }
+  .info-box p, .info-box li {
+    font-size: 13px;
+    color: #555;
+    line-height: 1.7;
+  }
+  .info-box ul { padding-left: 16px; }
+
+  /* 底部提示 */
+  .tips-section {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 30px;
+    margin-top: 36px;
+  }
+  .tips-section h2 {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--dark);
+    margin-bottom: 18px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .tips-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 16px;
+  }
+  .tip-card {
+    background: white;
+    border-radius: 12px;
+    padding: 16px 18px;
+    border: 1px solid rgba(0,0,0,0.05);
+  }
+  .tip-card strong {
+    display: block;
+    font-size: 14px;
+    color: var(--dark);
+    margin-bottom: 6px;
+  }
+  .tip-card p {
+    font-size: 13px;
+    color: #666;
+  }
+
+  footer {
+    text-align: center;
+    padding: 30px 20px;
+    color: #999;
+    font-size: 13px;
+  }
+
+  /* 响应式 */
+  @media (max-width: 600px) {
+    .hero { padding: 50px 16px 40px; }
+    .day-body { padding: 16px 18px 24px; }
+    .day-header { padding: 20px 18px 16px; }
+    .timeline { padding-left: 28px; }
+    .nav-bar { gap: 6px; justify-content: flex-start; }
+    .nav-btn { font-size: 12px; padding: 6px 14px; }
+  }
+
+  /* 打印优化 */
+  @media print {
+    .petal, .nav-bar { display: none !important; }
+    body { background: white; }
+    .day-card { break-inside: avoid; box-shadow: none; border: 1px solid #ddd; }
+  }
+</style>
+</head>
+<body>
+
+<!-- 樱花花瓣飘落 -->
+<script>
+(function() {
+  const petals = ['🌸','🌺','💮','✿'];
+  for(let i=0;i<12;i++){
+    let el = document.createElement('span');
+    el.className = 'petal';
+    el.textContent = petals[i%petals.length];
+    el.style.left = Math.random()*100+'vw';
+    el.style.animationDuration = (8+Math.random()*10)+'s';
+    el.style.animationDelay = Math.random()*8+'s';
+    el.style.fontSize = (14+Math.random()*14)+'px';
+    document.body.appendChild(el);
+  }
+})();
+</script>
+
+<!-- Hero -->
+<div class="hero">
+  <h1>🌸 <span>札幌</span> 4天3夜 · 春日之旅</h1>
+  <p class="hero-subtext hero-subtitle">上海 → 札幌新千岁 | 赏樱 · 温泉 · 美食 · 户外购物</p>
+  <div class="hero-badge">📅 2人出行 · 2026年4月 | 体力活动 + 自行车骑行</div>
+</div>
+
+<!-- 导航 -->
+<div class="nav-bar">
+  <button class="nav-btn active" onclick="scrollToDay(1)">D1 抵达·市区</button>
+  <button class="nav-btn" onclick="scrollToDay(2)">D2 赏樱·和牛</button>
+  <button class="nav-btn" onclick="scrollToDay(3)">D3 定山溪温泉</button>
+  <button class="nav-btn" onclick="scrollToDay(4)">D4 购物·返程</button>
+  <button class="nav-btn" onclick="scrollToTips()">💡 实用贴士</button>
+</div>
+
+<div class="container">
+
+<!-- ==================== DAY 1 ==================== -->
+<div class="day-card day-1" id="day1">
+  <div class="day-header">
+    <span class="day-num">1</span>
+    <span class="day-title">抵达札幌 · 初探市区</span>
+    <div class="day-tagline">上海飞抵新千岁 → 入住ANA皇冠假日 → ALPEN商店 → 札幌夜景</div>
+  </div>
+  <div class="day-body">
+    <div class="timeline">
+
+      <!-- 航班 -->
+      <div class="time-item highlight">
+        <span class="time-dot"></span>
+        <span class="time-range">08:00 – 12:30</span>
+        <div class="item-title">✈️ 上海浦东(PVG) → 新千岁机场(CTS)</div>
+        <div class="item-desc">
+          推荐航班：<strong style="color:#e65100">春秋航空 9C8791 / 吉祥航空 HO1621</strong><br>
+          • 上海浦东T2出发，约3小时飞行，日本时间+1h（时差+1）<br>
+          • 预计<strong>12:30左右</strong>到达新千岁国际机场<br>
+          • 💡 提前在线值机选座，建议靠过道方便活动
+        </div>
+        <span class="item-tag tag-flight">航班</span>
+        <span class="item-tag tip" style="display:inline-block;background:#e8eaf6;color:#283593;border-radius:10px;padding:2px 10px;font-size:11px;margin-top:6px;">⏰ 时差提醒：北海道比上海快1小时</span>
+      </div>
+
+      <!-- 机场到市区 -->
+      <div class="time-item">
+        <span class="time-dot"></span>
+        <span class="time-range">13:00 – 14:00</span>
+        <div class="item-title">🚆 新千岁机场 → 札幌站</div>
+        <div class="item-desc">
+          推荐 <strong>JR快速Airport号</strong>（快速エアポート）<br>
+          • 📍 机场JR站位于国际航站楼地下1层<br>
+          • ⏱️ 约<strong>37分钟</strong>直达札幌站<br>
+          • 💴 票价：¥1,150日元 / 人<br>
+          • 📋 班次密集：约每15-20分钟一班（9:00-16:00每小时6班）<br>
+          • 可使用ICOCA/Suica等IC卡直接刷卡进站
+        </div>
+        <span class="item-tag tag-jr">JR快速Airport号</span>
+        <span class="item-tag tag-walk">步行约3min至酒店</span>
+      </div>
+
+      <!-- 入住酒店 -->
+      <div class="time-item highlight">
+        <span class="time-dot"></span>
+        <span class="time-range">14:00 – 15:00</span>
+        <div class="item-title">🏨 办理入住 · ANA Crown Plaza Sapporo</div>
+        <div class="item-desc">
+          <strong>全日空皇冠假日酒店 札幌</strong>（ANA Crowne Plaza Sapporo）<br>
+          • 📍 地址：北海道札幌市中央区北3条西1丁目<br>
+          • 🚶 距离札幌站步行约<strong>1分钟</strong>（地铁札幌站21号出口旁）<br>
+          • ⭐ IHG旗下5星级，412间客房，山脉景观房推荐<br>
+          • 💡 提前在官网或Booking确认入住时间（通常14:00可办）
+        </div>
+        <span class="item-tag tag-hotel">住宿</span>
+        <span class="item-tag tip" style="display:inline-block;background:#e8eaf6;color:#283593;border-radius:10px;padding:2px 10px;font-size:11px;margin-top:6px;">💡 行李放酒店后再出门，轻装上阵逛市区</span>
+      </div>
+
+      <!-- 午餐 -->
+      <div class="time-item meal">
+        <span class="time-dot"></span>
+        <span class="time-range">15:00 – 16:30</span>
+        <div class="item-title">🍜 午餐 · 札幌拉面或车站周边简餐</div>
+        <div class="item-desc">
+          到达第一天先解决午餐，推荐选项：<br>
+          • <strong>札幌拉面横丁</strong>（薄野附近）—— 北海道必吃！味噌拉面发源地<br>
+          • <strong>ESTA札幌拉面共和国</strong>（札幌站楼上）—— 8家名店集合<br>
+          • <strong>车站周边咖喱汤</strong> —— 札幌特色美食
+        </div>
+        <span class="item-tag tag-food">美食</span>
+      </div>
+
+      <!-- ALPEN商店 -->
+      <div class="time-item highlight">
+        <span class="time-dot"></span>
+        <span class="time-range">16:30 – 19:00</span>
+        <div class="item-title">🎒 逛ALPEN户外运动商店（新店）</div>
+        <div class="item-desc">
+          ALPEN是日本最大连锁户外用品店之一<br>
+          • 📍 <strong>ALPEN SAPPORO</strong> — 札幌市区店<br>
+            （大通公园周边或Sapporo Factory区域的新店）<br>
+          • 经营品类：登山装备、滑雪、露营、骑行服饰、户外鞋、冲锋衣等<br>
+          • 北海道店常有<strong>独家限定款</strong>和季节折扣<br>
+          • 💡 日本户外品牌推荐关注：Mont-bell、Snow Peak、Goldwin、North Face日本线
+        </div>
+        <span class="item-tag tag-walk">逛街</span>
+        <span class="item-tag tip" style="display:inline-block;background:#fff3e0;color:#e65100;border-radius:10px;padding:2px 10px;font-size:11px;margin-top:6px;">💡 建议先逛不急着买，第四天还有户外市场采购环节</span>
+      </div>
+
+      <!-- 夜景 -->
+      <div class="time-item highlight">
+        <span class="time-dot"></span>
+        <span class="time-range">19:00 – 21:00</span>
+        <div class="item-title">🌃 札幌夜景欣赏</div>
+        <div class="item-desc">
+          二选一或两个都去：<br><br>
+          
+          <strong>A. 札幌电视塔 ★★★★☆（推荐首选）</strong><br>
+          • 📍 大通公園東端，地下鉄「大通駅」歩行5分<br>
+          • 🗼 高147.2米，观景台360°俯瞰札幌全貌<br>
+          • 🎫 门票：¥1,000日元/人<br>
+          • ⏰ 开放：9:00-22:00（最终入场21:30）<br>
+          • ✨ 黄昏时段（16:30-18:00）可同时看日落+夜景<br><br>
+          
+          <strong>B. 藻岩山缆车 ★★★★★（全景最佳）</strong><br>
+          • 📍 需从札幌站搭乘巴士约40分钟<br>
+          • 🚡 往返缆车约¥1,800日元/人<br>
+          • 🌃 被誉为"日本三大夜景"之一，视野极佳<br>
+          • ⚠️ 需预留较长时间，如当天太累可安排到后续行程
+        </div>
+        <span class="item-tag tag-walk">观景</span>
+      </div>
+
+      <!-- 晚餐 -->
+      <div class="time-item meal">
+        <span class="time-dot"></span>
+        <span class="time-range">21:00 – 22:30</span>
+        <div class="item-title">🍣 晚餐 · 薄野地区居酒屋/寿司</div>
+        <div class="item-desc">
+          薄野（Susukino）是札幌最大的夜生活区<br>
+          • 推荐：居酒屋小酌 + 生鱼片/烤串<br>
+          • 📍 从札幌站地铁南北线1站即达「薄野駅」<br>
+          • 第一天不宜太累，轻松用餐即可回酒店休息
+        </div>
+        <span class="item-tag tag-food">美食</span>
+      </div>
+
+      <div class="time-item meal">
+        <span class="time-dot"></span>
+        <span class="time-range">23:00</span>
+        <div class="item-title">🛏️ 回酒店休息</div>
+        <div class="item-desc">
+          早早休息，第二天要爬圆山公园看樱花！
+        </div>
+        <span class="item-tag tag-hotel">住宿</span>
+      </div>
+
+    </div><!-- timeline end -->
+
+    <div class="section-title">📋 Day 1 交通小结</div>
+    <div class="info-grid">
+      <div class="info-box">
+        <h4>✈️ 航班</h4>
+        <p>PVG → CTS 约3小时<br>春秋航空/吉祥航空 早班</p>
+      </div>
+      <div class="info-box">
+        <h4>🚆 机场→市区</h4>
+        <p>JR快速Airport号<br>约37分 / ¥1,150日元</p>
+      </div>
+      <div class="info-box">
+        <h4>🚶 市内交通</h4>
+        <p>札幌站→ALPEN 步行或地铁<br>→电视塔 地铁大通站</p>
+      </div>
+      <div class="info-box">
+        <h4>🏨 酒店</h4>
+        <p>ANA Crowne Plaza Sapporo<br>札幌站步行1分钟</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ==================== DAY 2 ==================== -->
+<div class="day-card day-2" id="day2">
+  <div class="day-header">
+    <span class="day-num">2</span>
+    <span class="day-title">圆山赏樱 & 和牛盛宴</span>
+    <div class="day-tagline">圆山公园徒步 → 北海道神宫 → 赏樱巡礼 → 和牛烧肉 → 预约定山溪Bus</div>
+  </div>
+  <div class="day-body">
+    <div class="timeline">
+
+      <!-- 早起 -->
+      <div class="time-item highlight">
+        <span class="time-dot"></span>
+        <span class="time-range">07:30 – 08:30</span>
+        <div class="item-title">☀️ 早餐 & 出发准备</div>
+        <div class="item-desc">
+          • 在酒店享用早餐（或便利店买饭团+咖啡上路）<br>
+          • 今日有<strong>爬山+长时间步行</strong>，穿舒适运动鞋！<br>
+          • 准备好水壶、防晒霜、轻便背包
+        </div>
+        <span class="item-tag tag-walk">体力活动</span>
+      </div>
+
+      <!-- 圆山公园 -->
+      <div class="time-item highlight">
+        <span class="time-dot"></span>
+        <span class="time-range">09:00 – 11:30</span>
+        <div class="item-title">🌸 圆山公园（Maruyama Park）徒步赏樱</div>
+        <div class="item-desc">
+          <strong>札幌第一赏樱名所</strong><br>
+          • 📍 札幌市中央区宮ケ丘3<br>
+          • 🚇 地下铁东西线「円山公園駅」出站步行<strong>5分钟</strong><br>
+          • 🌸 园内有超过<strong>150棵樱花树</strong>，以染井吉野樱为主<br>
+          • ⏰ 最佳观赏期：<strong>4月下旬～5月上旬</strong><br>
+          • 🏔️ 公园紧邻圆山（海拔225m），可登顶眺望札幌街景<br>
+          • 🚶‍♂️ 徒步环园路线约3km，耗时约1.5~2小时<br>
+          • 💡 早上人少光线好，拍照最佳时段
+        </div>
+        <span class="item-tag tag-walk">徒步约3km ↑↑</span>
+        <span class="item-tag tag-bike">也可骑行前往</span>
+      </div>
+
+      <!-- 北海道神宫 -->
+      <div class="time-item">
+        <span class="time-dot"></span>
+        <span class="time-range">11:30 – 13:00</span>
+        <div class="item-title">⛩️ 北海道神宫（Hokkaido Jingu）</div>
+        <div class="item-desc">
+          • 📍 就在圆山公园内，步行即达<br>
+          • ⛩️ 北海道最大的神社，供奉开拓三神<br>
+          • 🌸 神宫参道的樱花大道极具氛围感<br>
+          • 🍀 可以求签、买御守作为纪念<br>
+          • ⏰ 参拜时间：自由（神社全天开放）
+        </div>
+        <span class="item-tag tag-walk">步行可达</span>
+        <span class="item-tag tip" style="display:inline-block;background:#fce4ec;color:#c2185b;border-radius:10px;padding:2px 10px;font-size:11px;margin-top:6px;">📸 神宫鸟居+樱花=绝美打卡点</span>
+      </div>
+
+      <!-- 午餐 -->
+      <div class="time-item meal">
+        <span class="time-dot"></span>
+        <span class="time-range">13:00 – 14:30</span>
+        <div class="item-title">🍱 午餐 · 圆山公园/神宫周边</div>
+        <div class="item-desc">
+          • <strong>神宫表参道</strong>沿线有多个餐饮选择<br>
+          • 推荐尝试：汤咖喱（札幌特色）、海鲜丼、乌冬面<br>
+          • 或者回市区薄野/大通公园附近用餐
+        </div>
+        <span class="item-tag tag-food">美食</span>
+      </div>
+
+      <!-- 赏樱地点巡游 -->
+      <div class="time-item highlight">
+        <span class="time-dot"></span>
+        <span class="time-range">14:30 – 17:30</span>
+        <div class="item-title">🌸 赏樱地点巡礼（自行车骑行推荐！）</div>
+        <div class="item-desc">
+          下午利用<strong>电动自行车Porocle</strong>串联多个赏樱点：
+          <br><br>
+          <strong>🚲 租车方案：</strong><br>
+          • <strong>Porocle（ポロクレ）</strong> — 札幌市公共电动助力自行车系统<br>
+          • 全市<strong>70+个站点</strong>，随借随还，无需归还到原点<br>
+          • 💰 一日卡约 ¥660-880日元/人（可在KKday/Klook上提前购买）<br>
+          • 需注册IC卡或信用卡<br><br>
+
+          <strong>📍 推荐骑行赏樱路线（约10-12km，2人）：</strong><br>
+          <ol style="margin-left:18px;font-size:13px;color:#555;line-height:2;">
+            <li><strong>圆山公园</strong>（起点，继续补拍上午未尽的景色）</li>
+            <li><strong>中岛公园（Nakajima Koen）</strong> — 市中心绿洲，池畔樱花倒影</li>
+            <li><strong>大通公园（Odori Park）</strong> — 札幌地标，电视塔脚下</li>
+            <li><strong>Madama Park</strong>（真驹内公园）— 较少游客知道的秘境赏樱地</li>
+            <li><strong>莫埃来沼公园</strong>（如果时间充裕）— 大型雕塑公园+樱花</li>
+          </ol><br>
+          • 🚲 全程电动辅助，轻松愉快不费力<br>
+          • 🌸 4月下旬北海道樱花正值盛期，景色绝佳
+        </div>
+        <span class="item-tag tag-bike">骑行 10~12km</span>
+        <span class="item-tag tag-walk">体力消耗 中等</span>
+        <span class="item-tag tip" style="display:inline-block;background:#e3f2fd;color:#1565c0;border-radius:10px;padding:2px 10px;font-size:11px;margin-top:6px;">💡 Porocle需下载App或用KKday购买一日券，建议提前搞定</span>
+      </div>
+
+      <!-- 和牛晚餐 -->
+      <div class="time-item meal highlight">
+        <span class="time-dot"></span>
+        <span class="time-range">18:00 – 20:30</span>
+        <div class="item-title">🥩 和牛烧肉晚餐（需预约！）</div>
+        <div class="item-desc">
+          札幌和牛推荐餐厅（均在薄野/大通区域，方便到达）：<br><br>
+          
+          <strong>① 焼肉銀牙 GINGA ★★★★★</strong> 米其林必比登推荐<br>
+          • 📍 薄野站步行3分钟<br>
+          • 特色：精选黑毛和牛，炭火直烧<br>
+          • 💰 人均约 ¥8,000-15,000日元<br>
+          • 🔗 预约：MyConciergeJapan 或电话<br><br>
+          
+          <strong>② RAZAN 炭火焼肉（ラザン 薄野店）</strong><br>
+          • 📍 薄野站附近<br>
+          • 特色：比拉托里和牛为主，套餐制，性价比高<br>
+          • 💰 人均约 ¥6,000-10,000日元<br>
+          • 🔗 预约：MyAllValue 或官网<br><br>
+          
+          <strong>③ 富良野和牛 よしうし（Yoshiushi）</strong><br>
+          • 📍 薄野站步行2分钟<br>
+          • 特色：专注富良野产和牛，有包间<br>
+          • 🔗 预约：Tabelog/AutoReserve<br><br>
+          
+          <span class="item-tag tip" style="background:#ffebee;color:#c62828;">🔴 强烈建议提前至少1周通过以上平台预约！热门餐厅非常抢手。</span>
+        </div>
+        <span class="item-tag tag-food">和牛烧肉</span>
+        <span class="item-tag tag-walk">薄野地区</span>
+      </div>
+
+      <!-- 预约定山溪巴士 -->
+      <div class="time-item highlight">
+        <span class="time-dot"></span>
+        <span class="time-range">20:30 – 21:30</span>
+        <div class="item-title">🚌 确认定山溪巴士预订</div>
+        <div class="item-desc">
+          第三天去定山溪的交通方案：<br><br>
+          
+          <strong>推荐方案：河童Liner号（かっぱライナー）</strong><br>
+          • 🚌 运营：定铁巴士（じょうてつバス）<br>
+          • 📍 上车点：札幌站巴士总站（巴士センター）<br>
+          • ⏱️ 车程：约<strong>60分钟</strong>直达定山溪温泉街<br>
+          • 💰 票价：约<strong>¥770日元</strong>/人（单程）<br>
+          • 📅 <strong>推荐班次：9:30 或 10:30 发车</strong><br>
+          • 🔗 预约：<a href="https://www.jotetsu.co.jp/bus/kappa_liner/index.html" target="_blank" style="color:#1565c0;">jotetsu.co.jp/bus/kappa_liner</a><br><br>
+          
+          <span class="item-tag tip" style="background:#fff3e0;color:#e65100;display:block;padding:10px;border-radius:10px;margin-top:8px;">
+            ⚠️ 注意：部分班次为季节限定运行！请务必在出发前于官网确认当日时刻表并完成预约。
+          </span>
+        </div>
+        <span class="item-tag tag-bus">巴士</span>
+        <span class="item-tag tip" style="display:inline-block;background:#fce4ec;color:#c2185b;border-radius:10px;padding:2px 10px;font-size:11px;margin-top:6px;">🔑 关键动作：今晚必须完成明天的巴士预约</span>
+      </div>
+
+      <div class="time-item meal">
+        <span class="time-dot"></span>
+        <span class="time-range">22:00</span>
+        <div class="item-title">🛏️ 回酒店休息</div>
+        <div class="item-desc">
+          今天走了不少路，早点休息！明天定山溪温泉等你~
+        </div>
+        <span class="item-tag tag-hotel">住宿</span>
+      </div>
+
+    </div>
+
+    <div class="section-title">📋 Day 2 交通小结</div>
+    <div class="info-grid">
+      <div class="info-box">
+        <h4>🚇 札幌站→圆山公园</h4>
+        <p>地下铁东西线<br>約7分 → 円山公園駅</p>
+      </div>
+      <div class="info-box">
+        <h4>🚲 下午赏樱</h4>
+        <p>Porocle电动自行车<br>一日卡 ¥660-880日元</p>
+      </div>
+      <div class="info-box">
+        <h4>🚌 明天去定山溪</h4>
+        <p>河童Liner号<br>札幌站→定山溪 约60分</p>
+      </div>
+      <div class="info-box">
+        <h4>🥩 晚餐</h4>
+        <p>薄野和牛烧肉<br>需提前预约！</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ==================== DAY 3 ==================== -->
+<div class="day-card day-3" id="day3">
+  <div class="day-header">
+    <span class="day-num">3</span>
+    <span class="day-title">定山溪温泉一日游</span>
+    <div class="day-tagline">巴士直达定山溪 → 泡温泉 → 丰平峡 · 二见吊桥 · 河童传说 → 返回札幌</div>
+  </div>
+  <div class="day-body">
+    <div class="timeline">
+
+      <!-- 出发 -->
+      <div class="time-item highlight">
+        <span class="time-dot"></span>
+        <span class="time-range">09:00 – 09:30</span>
+        <div class="item-title">🚌 札幌站 → 定山溪温泉（河童Liner号）</div>
+        <div class="item-desc">
+          • 📍 <strong>札幌站巴士总站</strong>集合（原Esta大楼一层巴士中心）<br>
+          • 🚌 搭乘<strong>河童Liner号（かっぱライナー）</strong><br>
+          • ⏱️ 车程约<strong>60分钟</strong><br>
+          • 💰 单程约 ¥770日元/人<br>
+          • 🎫 使用Kitaca/ICOCA等IC卡可直接刷卡乘车<br>
+          • 📌 下车点：「定山溪湯之町」或「定山溪大桥」站（根据目的地选择）
+        </div>
+        <span class="item-tag tag-bus">巴士 60min</span>
+        <span class="item-tag tip" style="display:inline-block;background:#fff3e0;color:#e65100;border-radius:10px;padding:2px 10px;font-size:11px;margin-top:6px;">⏰ 建议提前15分钟到巴士总站找站台</span>
+      </div>
+
+      <!-- 温泉街漫步 -->
+      <div class="time-item">
+        <span class="time-dot"></span>
+        <span class="time-range">10:00 – 11:30</span>
+        <div class="item-title">♨️ 定山溪温泉街漫步</div>
+        <div class="item-desc">
+          定山溪素有<strong>"札幌的后花园"</strong>之称，位于支笏洞爷国立公园内<br><br>
+          • 🌊 温泉街沿<strong>丰平川</strong>两岸延伸约2公里<br>
+          • 🚶‍♂️ 整个温泉街<strong>步行可达</strong>，非常适合闲逛<br>
+          • 🏨 沿岸林立约20家传统日式旅馆（鹤雅之森、第一泷本馆等）<br>
+          • 🧝‍♂️ <strong>河童（Kappa）</strong>是这里的守护精灵——随处可见可爱的河童雕像<br>
+          • 📸 温泉街的木桥、红叶（春季则是嫩绿）+ 溪流 = 绝美
+        </div>
+        <span class="item-tag tag-walk">步行游览</span>
+      </div>
+
+      <!-- 泡温泉 -->
+      <div class="time-item highlight">
+        <span class="time-dot"></span>
+        <span class="time-range">11:30 – 14:00</span>
+        <div class="item-title">♨️ 泡温泉（核心体验）</div>
+        <div class="item-desc">
+          <strong>推荐泡汤方案（二选一）：</strong><br><br>
+          
+          <strong>A. 鹤雅之森 旅亭·花ゆら（つるがのもり）★★★★★</strong><br>
+          • 🏯 定山溪最高级温泉旅馆之一，建筑本身就是艺术品<br>
+          • ♨️ 提供<strong>日归温泉</strong>（不需要住店也能泡）<br>
+          • 💰 日归费用：约 ¥2,000-3,500日元/人<br>
+          • ✨ 室内外多个风吕，环境极美<br>
+          • 🔗 需提前预约日归入场<br><br>
+          
+          <strong>B. 定山溪温泉乡 · 各家旅馆的日归浴场</strong><br>
+          • 「定山溪温泉」官方提供多家旅馆的<strong>日归组合票</strong><br>
+          • 价格相对便宜，约 ¥1,000-2,000日元<br>
+          • 推荐：第一滝本館、定山溪Gran Hotel等<br><br>
+          
+          <span class="item-tag tip" style="background:#e8f5e9;color:#2e7d32;display:block;padding:10px;border-radius:10px;margin-top:8px;">
+            💡 泡温泉礼仪提醒：先淋浴洗干净身体再入池；不要把毛巾放入水中；长发请盘起。
+          </span>
+        </div>
+        <span class="item-tag tag-walk">温泉体验</span>
+      </div>
+
+      <!-- 午餐 -->
+      <div class="time-item meal">
+        <span class="time-dot"></span>
+        <span class="time-range">14:00 – 15:30</span>
+        <div class="item-title">🍱 午餐 · 定山溪特色料理</div>
+        <div class="item-desc">
+          泡完温泉正好吃午饭！<br>
+          • <strong>温泉馒头（ゆまん）</strong> — 必买的伴手礼点心<br>
+          • <strong>荞麦面/乌冬</strong> — 温泉街有多家老铺<br>
+          • <strong>涮涮锅</strong> — 部分旅馆餐厅对非住客开放<br>
+          • <strong>石狩鍋</strong> — 北海道特色的鲑鱼火锅
+        </div>
+        <span class="item-tag tag-food">美食</span>
+      </div>
+
+      <!-- 景点游览 -->
+      <div class="time-item highlight">
+        <span class="time-dot"></span>
+        <span class="time-range">15:30 – 17:30</span>
+        <div class="item-title">🏞️ 定山溪景点巡览</div>
+        <div class="item-desc">
+          下午安排游览以下景点（步行+短途接驳）：<br><br>
+          
+          <strong>① 丰平峡（Toyohira Gorge / 豊平峡）★★★★★</strong><br>
+          • 📍 从定山溪温泉街乘巴士约15分钟<br>
+          • 🌉 <strong>二见吊桥（二見吊橋）</strong> — 标志性红色吊桥，跨峡谷而建，绝佳拍照点<br>
+          • 🏞️ 两侧悬崖峭壁，丰平川奔流而下<br>
+          • 🚶‍♂️ 吊桥周边步道约1小时可走完<br><br>
+          
+          <strong>② 河童ロマン館（河童浪漫馆）</strong><br>
+          • 📍 温泉街上<br>
+          • 了解定山溪河童传说的博物馆<br>
+          • 适合轻松参观，约30分钟<br><br>
+          
+          <strong>③ 定山溪熊牧场（如果时间充裕）</strong><br>
+          • 🐻 近距离观察北海道棕熊<br>
+          • 位于温泉街入口处
+        </div>
+        <span class="item-tag tag-walk">徒步观光</span>
+        <span class="item-tag tag-bus">短途巴士</span>
+      </div>
+
+      <!-- 返回札幌 -->
+      <div class="time-item">
+        <span class="time-dot"></span>
+        <span class="time-range">17:30 – 19:00</span>
+        <div class="item-title">🚌 定山溪 → 札幌市区</div>
+        <div class="item-desc">
+          • 搭乘返程巴士回到札幌站<br>
+          • ⚠️ 末班车时间请注意！一般最晚约18:00-19:00<br>
+          • 回到札幌后在薄野/大通区域自由觅食
+        </div>
+        <span class="item-tag tag-bus">巴士 60min</span>
+      </div>
+
+      <!-- 晚餐 -->
+      <div class="time-item meal">
+        <span class="time-dot"></span>
+        <span class="time-range">19:00 – 21:00</span>
+        <div class="item-title">🍽️ 晚餐 · 札幌市区自由选择</div>
+        <div class="item-desc">
+          泡完温泉后胃口大开！可选：<br>
+          • <strong>成吉思汗羊肉（Genghis Khan / ジンギスカン）</strong> — 札幌特色！<br>
+          • <strong>海鲜市场</strong> — 二市场（場外市場）的现开海鲜丼<br>
+          • <strong>啤酒花园</strong>（如果是夏季）<br>
+          • 回酒店叫外卖也OK 😄
+        </div>
+        <span class="item-tag tag-food">美食</span>
+      </div>
+
+      <div class="time-item meal">
+        <span class="time-dot"></span>
+        <span class="time-range">21:30</span>
+        <div class="item-title">🛏️ 回酒店整理行李</div>
+        <div class="item-desc">
+          第四天下午要赶飞机，晚上简单收拾一下行李
+        </div>
+        <span class="item-tag tag-hotel">住宿</span>
+      </div>
+
+    </div>
+
+    <div class="section-title">📋 Day 3 交通小结</div>
+    <div class="info-grid">
+      <div class="info-box">
+        <h4>🚌 往</h4>
+        <p>札幌站→定山溪<br>河童Liner号 约60分<br>¥770日元/人</p>
+      </div>
+      <div class="info-box">
+        <h4>🚌 返</h4>
+        <p>定山溪→札幌站<br>同样巴士 约60分<br>注意末班时间！</p>
+      </div>
+      <div class="info-box">
+        <h4>🚶 温泉街内</h4>
+        <p>全程步行可达<br>丰平峡需短途巴士</p>
+      </div>
+      <div class="info-box">
+        <h4>♨️ 温泉推荐</h4>
+        <p>鹤雅之森 日归<br>¥2,000-3,500日元/人</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ==================== DAY 4 ==================== -->
+<div class="day-card day-4" id="day4">
+  <div class="day-header">
+    <span class="day-num">4</span>
+    <span class="day-title">购物扫货 & 返回香港</span>
+    <div class="day-tagline">户外用品市场采购 → 札幌市区购物 → 新千岁机场 → 飞香港</div>
+  </div>
+  <div class="day-body">
+    <div class="timeline">
+
+      <!-- 起床 -->
+      <div class="time-item">
+        <span class="time-dot"></span>
+        <span class="time-range">08:00 – 09:00</span>
+        <div class="item-title">☀️ 早餐 & 退房准备</div>
+        <div class="item-desc">
+          • 酒店早餐或便利店解决<br>
+          • 办理退房（可将行李寄存在札幌站<strong> coin locker</strong>）<br>
+          • 💡 札幌站有大件行李寄存柜，约 ¥600-800日元/件
+        </div>
+        <span class="item-tag tag-walk">准备</span>
+      </div>
+
+      <!-- 户外用品市场 -->
+      <div class="time-item highlight">
+        <span class="time-dot"></span>
+        <span class="time-range">09:00 – 12:30</span>
+        <div class="item-title">🏕️ 户外用品市场深度采购</div>
+        <div class="item-desc">
+          <strong>今日重点任务：户外装备买买买！</strong><br><br>
+          
+          <strong>推荐采购地点（按优先级排序）：</strong><br><br>
+          
+          <strong>① ALPEN SAPPORO</strong>（第一天已踩点，今天来扫货）<br>
+          • 日本最大户外连锁品牌<br>
+          • 品类齐全：登山包、冲锋衣、徒步鞋、露营装备、滑雪装备<br>
+          • <strong>北海道限定款</strong>值得留意<br><br>
+          
+          <strong>② Mont-bell 札幌旗舰店</strong><br>
+          • 📍 札幌工厂（Sapporo Factory）或大通周边<br>
+          • 🇯🇵 日本国民户外品牌，性价比极高<br>
+          • RainWear雨衣、户外背包、露营灯都是热门商品<br><br>
+          
+          <strong>③ 札幌工厂 Sapporo Factory</strong><br>
+          • 改建自旧札幌啤酒厂的购物中心<br>
+          • 集购物+餐饮一体，有ABC-MART等运动用品店<br>
+          • 适合最后冲刺采购<br><br>
+          
+          <strong>④ Loft / 东急Hands（杂货+户外配件）</strong><br>
+          • 户外小配件、旅行用品、收纳神器<br>
+          • 札幌PARCO或ESTA商场内
+        </div>
+        <span class="item-tag tag-walk">购物</span>
+        <span class="item-tag tag-bike">可骑车穿梭各店</span>
+      </div>
+
+      <!-- 午餐 -->
+      <div class="time-item meal">
+        <span class="time-dot"></span>
+        <span class="time-range">12:30 – 13:30</span>
+        <div class="item-title">🍱 午餐 · 购物区周边</div>
+        <div class="item-desc">
+          Sapporo Factory内有丰富餐饮选择<br>
+          • 或回札幌站ESTA/Bic Camera楼层就餐
+        </div>
+        <span class="item-tag tag-food">美食</span>
+      </div>
+
+      <!-- 补充采购 -->
+      <div class="time-item">
+        <span class="time-dot"></span>
+        <span class="time-range">13:30 – 14:30</span>
+        <div class="item-title">🛍️ 最后补充 / 药妆·伴手礼</div>
+        <div class="item-desc">
+          如果时间充裕，可以顺便采购：<br>
+          • 💊 药妆：松本清、大国药妆（札幌站前就有）<br>
+          • 🍫 白色恋人巧克力（机场也有专卖店）<br>
+          • 🍡 定山溪温泉馒头（昨天没买的话）<br>
+          • ⚠️ <strong>注意控制时间！14:30之前必须开始往机场移动</strong>
+        </div>
+        <span class="item-tag tag-walk">补充购物</span>
+      </div>
+
+      <!-- 去机场 -->
+      <div class="time-item highlight">
+        <span class="time-dot"></span>
+        <span class="time-range">14:30 – 15:30</span>
+        <div class="item-title">🚆 札幌站 → 新千岁机场</div>
+        <div class="item-desc">
+          • 再次搭乘 <strong>JR快速Airport号</strong> 前往机场<br>
+          • ⏱️ 约37分钟到达<br>
+          • 💴 ¥1,150日元/人<br>
+          • 🛄 取回寄存的行李<br>
+          • ⚠️ <strong>国际航班建议提前2-2.5小时到机场</strong><br>
+          • 新千岁机场免税店很值得逛！LeTAO蛋糕、Royce生巧等
+        </div>
+        <span class="item-tag tag-jr">JR Airport号</span>
+        <span class="item-tag tip" style="display:inline-block;background:#ffcdd2;color:#c62828;border-radius:10px;padding:2px 10px;font-size:11px;margin-top:6px;">⚠️ 切勿卡点！留足安检+退税+免税店时间</span>
+      </div>
+
+      <!-- 航班返回 -->
+      <div class="time-item highlight">
+        <span class="time-dot"></span>
+        <span class="time-range">16:00 – 19:30</span>
+        <div class="item-title">✈️ 新千岁机场(CTS) → 香港(HKG)</div>
+        <div class="item-desc">
+          <strong>推荐航班选择：</strong><br>
+          • <strong>香港快运航空 UO1610</strong> / <strong>国泰港龙/HK Express</strong><br>
+          • 16:00左右起飞，约5.5-6小时飞行<br>
+          • 预计抵达香港约<strong>19:30-20:00</strong>（香港时间）<br><br>
+          
+          💡 <strong>新千岁机场TIPs：</strong><br>
+          • 🍰 <strong>LeTAO</strong> 双层芝士蛋糕必买！机场有专门店<br>
+          • 🍫 <strong>Royce'</strong> 生巧克力（机场限定包装）<br>
+          • 🍦 Dole冰淇淋（北海道牛奶超浓郁）<br>
+          • 🍶 免税酒区可以看看日本威士忌<br>
+          • 💴 记得在机场办理<strong> Tax-free 退税</strong>（持旅游签证）
+        </div>
+        <span class="item-tag tag-flight">航班</span>
+        <span class="item-tag tag-walk">免税店购物</span>
+      </div>
+
+    </div>
+
+    <div class="section-title">📋 Day 4 交通小结</div>
+    <div class="info-grid">
+      <div class="info-box">
+        <h4>🚆 札幌→机场</h4>
+        <p>JR Airport号 约37分<br>建议14:30前出发</p>
+      </div>
+      <div class="info-box">
+        <h4>✈️ 返程航班</h4>
+        <p>CTS → HKG 约16:00起飞<br>飞行5.5-6小时</p>
+      </div>
+      <div class="info-box">
+        <h4>🛍️ 采购重点</h4>
+        <p>户外装备 > 药妆 > 伴手礼<br>机场免税最后机会</p>
+      </div>
+      <div class="info-box">
+        <h4>💰 退税提醒</h4>
+        <p>持旅游签证可在机场<br>办理免税 8-10%</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ==================== 实用贴士 ==================== -->
+<div class="tips-section" id="tips">
+  <h2>💡 实用贴士 & 出行准备</h2>
+
+  <div class="tips-grid">
+    <div class="tip-card">
+      <strong>🎫 交通卡推荐</strong>
+      <p>购买 <strong>Kitaca</strong>（北海道版）或 <strong>ICOCA/Suica</strong> IC卡，JR、地铁、公交、便利店通用。机场自动售卖机即可购买。建议每人充 ¥5,000 日元起步。</p>
+    </div>
+    <div class="tip-card">
+      <strong>🌤️ 4月札幌天气</strong>
+      <p>气温约 5~15°C，早晚凉中午温和。可能有残雪或春雨。<strong>穿搭建议：洋葱式穿衣</strong>，保暖内衣+抓绒+防风外套，方便穿脱。</p>
+    </div>
+    <div class="tip-card">
+      <strong>🚲 Porocle自行车</strong>
+      <p>札幌公共电动助力自行车，全市70+站点。建议在 KKday/Klook 购买一日卡（约¥660-880），支持异地还车，非常灵活。</p>
+    </div>
+    <div class="tip-card">
+      <strong>💴 货币与支付</strong>
+      <p>大部分店铺支持信用卡/电子支付，但小型餐馆、巴士可能只收现金。建议每人换 <strong>¥30,000-50,000 日元现金</strong>随身。</p>
+    </div>
+    <div class="tip-card">
+      <strong>📱 实用App</strong>
+      <p>• Google Maps（导航必备）<br>• Google Translate（翻译）<br>• Japan Transit Planner<br>• Porocle App（租自行车）<br>• Tabelog/Gurunavi（找餐厅）</p>
+    </div>
+    <div class="tip-card">
+      <strong>📶 网络</strong>
+      <p>推荐国内提前租赁<strong>日本WiFi蛋</strong>（淘宝/支付宝均可租），或购买 eSIM 卡（Ubigi/Sakura Mobile）。札幌市区信号良好。</p>
+    </div>
+    <div class="tip-card">
+      <strong>🌸 樱花花期</strong>
+      <p>北海道樱花季约为 <strong>4月底～5月中旬</strong>。具体开花日期每年不同，出发前建议查看最新<a href="https://www.uu-nippon.cn/hokkaido/flower/sakura.shtml" target="_blank" style="color:#1565c0;">樱花开花预测</a>。圆山公园+北海道神宫是札幌最经典赏樱地。</p>
+    </div>
+    <div class="tip-card">
+      <strong>📦 行李建议</strong>
+      <p>• 登山杖（圆山公园可用）<br>• 充电宝（大容量）<br>• 折叠购物袋（扫货必备）<br>• 墨镜+防晒霜<br>• 泳衣（泡温泉用）<br>• 塑料袋（温泉时装湿衣物）</p>
+    </div>
+  </div>
+
+  <div class="section-title" style="margin-top:28px;">💰 预估预算（2人）</div>
+  <table style="width:100%;border-collapse:collapse;font-size:14px;margin-top:10px;">
+    <tr style="background:#fef5e7;">
+      <th style="padding:10px;text-align:left;border-bottom:2px solid #f0b27a;">项目</th>
+      <th style="padding:10px;text-align:right;border-bottom:2px solid #f0b27a;">预估费用（日元）</th>
+      <th style="padding:10px;text-align:right;border-bottom:2px solid #f0b27a;">备注</th>
+    </tr>
+    <tr><td style="padding:8px;border-bottom:1px solid #eee;">往返机票（含税）</td><td style="padding:8px;text-align:right;border-bottom:1px solid #eee;">¥40,000-70,000 × 2</td><td style="padding:8px;border-bottom:1px solid #eee;">视预订时间浮动</td></tr>
+    <tr><td style="padding:8px;border-bottom:1px solid #eee;">住宿（3晚）</td><td style="padding:8px;text-align:right;border-bottom:1px solid #eee;">¥25,000-45,000 × 3晚</td><td style="padding:8px;border-bottom:1px solid #eee;">ANA Crowne Plaza</td></tr>
+    <tr><td style="padding:8px;border-bottom:1px solid #eee;">交通（JR/巴士/地铁）</td><td style="padding:8px;text-align:right;border-bottom:1px solid #eee;">¥8,000-12,000 × 2</td><td style="padding:8px;border-bottom:1px solid #eee;"></td></tr>
+    <tr><td style="padding:8px;border-bottom:1px solid #eee;">餐饮（4天）</td><td style="padding:8px;text-align:right;border-bottom:1px solid #eee;">¥20,000-35,000 × 2</td><td style="padding:8px;border-bottom:1px solid #eee;">含一顿和牛大餐</td></tr>
+    <tr><td style="padding:8px;border-bottom:1px solid #eee;">景点门票</td><td style="padding:8px;text-align:right;border-bottom:1px solid #eee;">¥5,000-10,000 × 2</td><td style="padding:8px;border-bottom:1px solid #eee;">电视塔+温泉+缆车</td></tr>
+    <tr><td style="padding:8px;border-bottom:1px solid #eee;">Porocle自行车</td><td style="padding:8px;text-align:right;border-bottom:1px solid #eee;">¥1,500-2,000 × 2</td><td style="padding:8px;border-bottom:1px solid #eee;">一日卡</td></tr>
+    <tr><td style="padding:8px;border-bottom:1px solid #eee;"><strong>购物（弹性最大）</strong></td><td style="padding:8px;text-align:right;border-bottom:1px solid #eee;"><strong>视需求</strong></td><td style="padding:8px;border-bottom:1px solid #eee;">户外装备为主</td></tr>
+    <tr style="background:#e8f8f5;font-weight:700;">
+      <td style="padding:10px;border-bottom:none;">合计（不含购物）</td>
+      <td style="padding:10px;text-align:right;border-bottom:none;">约 ¥160,000-280,000 / 2人</td>
+      <td style="padding:10px;border-bottom:none;">≈ ¥7,500-13,000 元/人</td>
+    </tr>
+  </table>
+</div>
+
+</div><!-- container end -->
+
+<footer>
+  <p>🌸 祝特特札幌之旅愉快！如有需要随时调整行程 ~</p>
+  <p style="margin-top:6px;">Made with ❤️ | 数据来源：公开信息综合整理 | 2026.04</p>
+</footer>
+
+<script>
+// 导航平滑滚动
+function scrollToDay(day) {
+  const el = document.getElementById(day === 'tips' ? 'tips' : 'day' + day);
+  if (el) {
+    el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    // 更新按钮状态
+    document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+    event.target.classList.add('active');
+  }
+}
+function scrollToTips() {
+  document.getElementById('tips').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+  event.target.classList.add('active');
+}
+
+// 滚动时更新导航高亮
+window.addEventListener('scroll', function() {
+  const days = ['day1','day2','day3','day4','tips'];
+  const btns = document.querySelectorAll('.nav-btn');
+  let current = 0;
+  for (let i = days.length - 1; i >= 0; i--) {
+    const el = document.getElementById(days[i]);
+    if (el && el.getBoundingClientRect().top <= 120) {
+      current = i;
+      break;
+    }
+  }
+  btns.forEach((btn, idx) => {
+    btn.classList.toggle('active', idx === current);
+  });
+}, { passive: true });
+</script>
+
+</body>
+</html>
